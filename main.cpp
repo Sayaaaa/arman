@@ -1,283 +1,399 @@
-#include<iostream>
-#include<string>
-using namespace std;
-#define NUM 1000
-void read();
-void menu();
-void find_num();
-void write()
-void add();
-void modify_num();
-void del_num();
-void grsds();
-void load(); 
-void list()
-struct emploee  //Ö°¹¤Êı¾İ½á¹¹
-int n;      //Ô±¹¤×ÜÈËÊı
-{
- char no[10];
- char name[30];
- float wage1;      //Ô±¹¤µÄ»ù±¾¹¤×Ê
- float wage2;      //Ô±¹¤µÄÖ°Îñ¹¤×Ê
- float wage3;      //Ô±¹¤µÄÖ°Îñ½òÌù
- float wage4;   //Ô±¹¤µÄ¼¨Ğ§¹¤×Ê
- float wage5;    //Ô±¹¤µÄÓ¦·¢¹¤×Ê
- float TAXfee;     //Ô±¹¤µÄ¸öÈËËùµÃË°
- float wage6;      //Ô±¹¤µÄÊµ·¢¹¤×Ê
-}emp[NUM],newemp;
-void main()
-{
- menu();
-}
-void menu()//Ö÷½çÃæ
-{  int n,w1;
-   
-   do
-   { system("cls");  
-      printf("************* Ö°¹¤¹¤×Ê¹ÜÀíÏµÍ³ **************\n");
-      printf("*            1-----²éÕÒÖ°¹¤ĞÅÏ¢                     *\n");
-      printf("*            2-----Ìí¼ÓÖ°¹¤ĞÅÏ¢                     *\n");
-      printf("*            3-----ĞŞ¸ÄÖ°¹¤ĞÅÏ¢	                             *\n");
-      printf("*            4-----É¾³ıÖ°¹¤ĞÅÏ¢             *\n");
-      printf("*            5-----ÍË³ö³ÌĞò                           *\n");
-      printf("***************************************************\n");
-  printf("       ÊäÈëÄúµÄÑ¡Ôñ(1-9):[ ]\b\b");
-  scanf("%d",&n);
-  if(n<1||n>9)                                    //¶ÔÑ¡ÔñµÄÊı×Ö×÷ÅĞ¶Ï
-         {
-            w1=1;
-            printf("your choice is not between 1 and 9,Please input again:");
-            getchar();
-          }
-         else    w1=0;
-      } 
-    while(w1==1);
-  switch(n)
-  { case 1:search_num();    break;   
-    case 2:add();   break;  
-    case 3:modi_num();   break;    
-    case 4:dele_num();   break;    
-    case 5:count ();    break;    
-    case 9:printf("\n¡Á¡Á¡Á¡Á¡Á¡Á¡ÁĞ»Ğ»£¬»¶Ó­ÏÂ´Î¹âÁÙ£¡¡Á¡Á¡Á¡Á¡Á¡Á¡Á\n\n");
-    default:exit(0);  //ÍË³öÏµÍ³,exit(0)º¯Êı¹¦ÄÜÊÇÍË³ö³ÌĞò¡£
-  }
-}
-/*************************¶ÁÈ¡Ä£¿é**********************/
-void read()
-{
-     FILE *fp;
-     int n,i;
-     if ((fp=fopen("emp.txt","wb"))==NULL)
-     {
- 
-     printf("²»ÄÜ½¨Á¢empÎÄ¼ş\n");
-     exit(1);
-     }
-     printf("ÊäÈëÖ°¹¤ÈËÊı:");
-    scanf("%d",&n);
-     printf("ÊäÈë¸ñÊ½:Ö°¹¤ºÅ ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° Êµ·¢¹¤×Ê<Enter>\n");
-     for(i=0;i<n;i++)   /*  Ñ­»·»ñÈ¡n¸öÖ°¹¤¼ÇÂ¼ */
-     {
-         printf("µÚ%d¸öÖ°¹¤:",i+1);
-         scanf("%s%s%s%d%f%f%f%f%f",emp[i].no,emp[i].name,
-           &emp[i].wage1,&emp[i].wage2,&emp[i].wage3,&emp[i].wage4,&emp[i].wage5,&emp[i].&emp[i].TAXfee); emp[i].wage6=emp[i].wage1+emp[i].wage2+emp[i].wage3+emp[i].wage4+emp[i].wage5.TAXfee;
-     }
-     for(i=0;i<n;i++)      /*½«n¸öÖ°¹¤¼ÇÂ¼Ğ´ÈëÎÄ¼ş*/
-          fwrite(&emp[i],sizeof(struct emploee),1,fp);
-     fclose(fp);
-}
-/*************************Í³¼ÆÄ£¿é**********************/
-void grsds()
-{
-     FILE *fp;
-     int n,num;
-     if((fp=fopen("emp.txt","rb"))==NULL)
-     {
-         printf("²»ÄÜ´ò¿ªempÎÄ¼ş\n");
-         exit(1);
-     }
-     printf("ÇëÊäÈë¹¤×ÊÊı:");
-     scanf("%d",&num);
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ ĞÕÃû ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° Êµ·¢¹¤×Ê\n");
-     for(n=0;fread(&emp[n],sizeof(struct emploee),1,fp)!=0;n++)
-     if(emp[n].wage3>=num)
-     printf("%6d%6s%9s%4s%5d   %.1f   %.1f  %.1f   %.1f   %.1f   %.1f\n",n+1,emp[n].no,emp[n].name,emp[n].wage1,
-             emp[n].wage2,emp[n].wage3,emp[n].wage4,emp[n].wage5,emp[n].TAXfee,emp[n].wage6);
-     fclose(fp);
-}
-/********************É¾³ıÄ£¿é*******************/
+/********************************************************
+Copyright (C), 2018-2020, å¹¿è¥¿æ°‘æ—å¤§å­¦è½¯ä»¶ä¸ä¿¡æ¯å®‰å…¨å­¦é™¢
+File name:qwq.cpp
+Author:æ±Ÿå†äºšÂ·é˜¿åˆæ	Version:1.0.0	Date:2018.6.29
+Description:æœ¬ç³»ç»Ÿçš„è®¾è®¡ç›®æ ‡æ˜¯å®ç°èŒå·¥å·¥èµ„è®°å½•çš„å½•å…¥ã€æŸ¥
+	è¯¢ã€ä¿®æ”¹ã€æ·»åŠ ã€åˆ é™¤åŠæ•°æ®ä¿å­˜åŠŸèƒ½ã€‚æ ¹æ®ç°æœ‰å·¥èµ„ç³»ç»Ÿ
+	çš„å®é™…æƒ…å†µç¡®å®šèŒå·¥å·¥èµ„è®°å½•ç”±èŒå·¥å·¥å·ã€èŒå·¥å§“åã€å²—ä½
+	å·¥èµ„ã€è–ªçº§å·¥èµ„ã€èŒåŠ¡æ´¥è´´ã€ç»©æ•ˆå·¥èµ„ã€åº”å‘å·¥èµ„ã€ä¸ªäººæ‰€
+	å¾—ç¨å’Œå®å‘å·¥èµ„9ä¸ªé¡¹ç›®æ„æˆã€‚ ç³»ç»Ÿåº”å®ç°å·¥èµ„è®°å½•çš„é€æ¡
+	æ·»åŠ ã€ä¿å­˜ã€æ ¹æ®å·¥å·è¿›è¡ŒæŸ¥è¯¢ã€æµè§ˆã€åˆ é™¤ï¼Œå¹¶èƒ½åœ¨æ·»åŠ 
+	ä¿®æ”¹çš„åŒæ—¶è‡ªåŠ¨å®Œæˆä¸ªäººæ‰€å¾—ç¨å’Œåº”å‘å·¥èµ„çš„è®¡ç®—ã€‚
+Version:1.0.0
+Function List:
+	void read();	//å‘æ•°æ®æ–‡ä»¶ä¸­è¯»å–ç›¸å…³ä¿¡æ¯æ•°æ®
+	void write();	//ä¿å­˜èŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	void find();	//æŸ¥è¯¢èŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	void list();	//æµè§ˆèŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	void modify();	//ä¿®æ”¹èŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	void del();		//åˆ é™¤èŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	void add();		//æ·»åŠ èŒå·¥å·¥èµ„ä¿¡æ¯æ•°æ®
+	float grsd(float v);	//è®¡ç®—ä¸ªäººæ‰€å¾—ç¨		
+History:
+	<author>      <time>	<version>	    <desc>
+	æ±Ÿå†äºšÂ·é˜¿åˆæ		2018.6.30	  1.0.0    build this moudle
 
-void del_num()
+*********************************************************/
+
+#include<iostream>
+#include<string.h>
+#include<fstream>
+#include<conio.h>
+#include<iomanip>
+using namespace std;
+
+int n=0;	//è®°å½•èŒå·¥äººæ•°
+
+//å£°æ˜è‡ªå®šä¹‰çš„ç›¸å…³å‡½æ•°
+void read();
+void write();
+void find();
+void list();
+void modify();
+void del();
+void add();
+float grsd(float v);
+
+struct zhigong		//èŒå·¥æ•°æ®ç»“æ„
+{   char number[10];
+    char name[10];
+    float post_wage;		//å‘˜å·¥çš„å²—ä½å·¥èµ„
+    float pay_salary;		//å‘˜å·¥çš„è–ªçº§å·¥èµ„
+    float duty_allowance;	//å‘˜å·¥çš„æ”¿åŠ¡æ´¥è´´
+    float merit_pay;		//ç»©æ•ˆå·¥èµ„
+    float gross_pay;		//åº”å‘å·¥èµ„
+    float income_tax;		//ä¸ªäººæ‰€å¾—ç¨
+    float payroll;			//å®å‘å·¥èµ„
+    
+};
+struct zhigong zggz[100];	//å£°æ˜è®°å½•èŒå·¥å·¥èµ„æƒ…å†µçš„100ä¸ªå…ƒç´ çš„ç»“æ„ä½“
+
+void read()		//ä»æ–‡ä»¶ä¸­è¯»å–æ•°æ®
 {
-     FILE *fp;
-     int i,j,n;
-     char num[5];
-     if((fp=fopen("emp.txt","rb"))==NULL)
-     {
-         printf("²»ÄÜ´ò¿ªempÎÄ¼ş\n");
-         exit(1);
-      }
-     printf("É¾³ıÇ°:\n");
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° Êµ·¢¹¤×Ê\n");
-    for(n=0;fread(&emp[n],sizeof(struct emploee),1,fp);n++)
-     printf("%6d%6s%9s%4s%5d   %.1f   %.1f   %.1f   %.1f   %.1f   %.1f\n",n+1,emp[n].no,emp[n].name,emp[n].wage1,emp[n].wage2,emp[n].wage3,emp[n].wage4,emp[n].wage5,
-	 emp[n].TAXfee,emp[n].wage6);/*nÎªempÎÄ¼şÖĞ¼ÇÂ¼Êı*/
-     printf("ÒªÉ¾³ıµÄÖ°¹¤ºÅ:");
-     scanf("%s",num);
-     for(i=0;(strcmp(emp[i].no,num)!=0&&i<n);i++)
-     if(i>=n)
-     {
-          printf("\tÃ»ÓĞ%sÖ°¹¤ºÅµÄÖ°¹¤\n",num);
-          exit(2);
-     }
-     fclose(fp);
-     fp=fopen("emp.dat","w+");
-     if(n==1)  /*Ò»¸ö¼ÇÂ¼ÒÑ¾­É¾³ıÁË*/
-     {
-           fclose(fp);
-           exit(3);
-     }
-     for(j=0;j<i;j++)
-        fwrite(&emp[j],sizeof(struct emploee),1,fp);
-     for(j=i+1;j<n;j++)
-         fwrite(&emp[j],sizeof(struct emploee),1,fp);
-     printf("É¾³ıºó:\n");
-     fseek(fp,0,SEEK_SET);
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° Êµ·¢¹¤×Ê\n");
-     for(i=0;fread(&emp[i],sizeof(struct emploee),1,fp);i++)
-         printf("%6d%6s%9s%4s%5d%   %.1f    %.1f   %.1f   %.1f   %.1f   %.1f\n",i+1,emp[i].no,emp[i].name,emp[i].wage1,
-                 emp[i].wage2,emp[i].wage3,emp[i].wage4,emp[i].wage5,emp[i].TAXfee,emp[i].wage6);
-       fclose(fp);
-}
-/********************ĞŞ¸ÄÄ£¿é*******************/
-void modify _num()
-{
-     FILE *fp;
-     int i,j;
-     char num[5];
-     if((fp=fopen("emp.txt","rb+"))==NULL)
-     {
-         printf("²»ÄÜ ´ò¿ªempÎÄ¼ş\n");
-         exit(1);
-     }
-     printf("ÒªĞŞ¸ÄµÄÖ°¹¤ºÅ:");
-     scanf("%s",num);
-     for(i=0;fread(&emp[i],sizeof(struct emploee),1,fp);i++)
-    if(!strcmp(emp[i].no,num))break;
-     if(feof(fp))
-     {
-          printf("\tÃ»ÓĞ%sÖ°¹¤ºÅµÄÖ°¹¤\n",num);
-          exit(2);
-     }
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ   ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë°  Êµ·¢¹¤×Ê\n");
-     printf("%6d%6s%9s%4s%5d%   %.1f   %.1f   %.1f   %.1f   %.1f   %.1f\n",i+1,emp[i].no,emp[i].name,emp[i].wage1,
-              emp[i].wage2,emp[i].wage3,emp[i].wage4,emp[i].wage5,emp[i].TAXfee,emp[i].wage6);
-    printf("ÊäÈë¸ñÊ½:Ö°¹¤ºÅ   ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° <Enter>\n");
-    printf("µÚ%d¸ö¼ÇÂ¼:",i+1);
-    scanf("%s%s%s%d%f%f%f%f%f",newemp.no,newemp.name,
-               &newemp.wage1,&newemp.wage2,&newemp.wage3,&newemp.wage4,&newemp.wage5,&newemp.TAXfee);//»ñÈ¡ĞÂµÄÖ°¹¤¼ÇÂ¼
-             newemp.wage6=newemp.wage1+newemp.wage2+&newemp.wage3+&newemp.wage4+&newemp.wage5-newemp.TAXfee;
-    fseek(fp,-(long)sizeof(struct emploee),SEEK_CUR);  //ÎÄ¼şÖ¸ÕëÖ¸Ïò¸ÃĞŞ¸ÄµÄ¼ÇÂ¼¿ªÍ·
-     fwrite(&newemp,sizeof(struct emploee),1,fp);  //ÓÃnewemp¸²¸Çµ±Ç°¼ÇÂ¼
-     printf(" ĞŞ¸Äºó:\n");
-    fseek(fp,0,SEEK_SET);        //ÏÔÊ¾ĞŞ¸ÄºóµÄÎÄ¼şÊı¾İ
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ    ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë°  Êµ·¢¹¤×Ê\n");
-     for(i=0;fread(&emp[i],sizeof(struct emploee),1,fp)!=0;i++)
-         printf("%6d%6s%9s%4s%5d   %.1f   %.1f  %.1f   %.1f  %.1f   %.1f\n",i+1,emp[i].no,emp[i].name,emp[i].wage1,
-                   emp[i].wage2,emp[i].wage3,emp[i].wage4,emp[i].wage5,emp[i].TAXfee,emp[i].wage6);
-    fclose(fp);
-}
- /*************************²éÑ¯Ä£¿é***********************/
-void find_num()
-{
-     FILE *fp;
-     int i; 
-     char num[5];
-     if((fp=fopen("emp.txt","rb"))==NULL)
-     {
-          printf("²»ÄÜ´ò¿ªempÎÄ¼ş\n");
-          exit(1);
-     }
-     printf("Òª²éÑ¯µÄÖ°¹¤ºÅ:");
-     scanf("%s",num);
-     for(i=0;fread(&emp[i],sizeof(struct emploee),1,fp);i++)
-         if(!strcmp(emp[i].no,num)) break;
-    if(feof(fp))
-    {
-        printf("\t²éÎŞ´ËÈË\n");
-        exit(2);
-    }
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ   ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë°  Êµ·¢¹¤×Ê\n");
-     printf("%6d%6s%9s%4s%5d  %.1f  %.1f  %.1f  %.1f   %.1f   %.1f\n",i+1,emp[i].no,emp[i].name,emp[i].wage1,
-               emp[i].wage2,emp[i].wage3,emp[i].wage4,emp[i].wage5,emp[i].TAXfee,emp[i].wage6);
-       fclose(fp);
-}
-/*******************ä¯ÀÀÄ£¿é********************/
-void list()
-{    int i;
-     FILE *fp;
-     if((fp=fopen("emp.txt","r"))==NULL)
-     {     
-         printf("²»ÄÜ´ò¿ªempÎÄ¼ş\n");
-         exit(0);
-     }
-     printf("¼ÇÂ¼ºÅ Ö°¹¤ºÅ     ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° Êµ·¢¹¤×Ê\n");
-     for(i=0;fread(&emp[i],sizeof(struct emploee),1,fp)!=0;i++)
-     {
-          printf("%6d%6s%9s%4s%5d  %.1f  %.1f     %.1f    %.1f    %.1f   %.1f\n",i+1,emp[i].no,emp[i].name,emp[i].wage1,
-                   emp[i].wage2,emp[i].wage3emp[i].wage4,emp[i].wage5,emp[i].TAXfee,emp[i].wage6);
-    }
-    fclose(fp);
-}
-/******************Ìí¼ÓÄ£¿é*******************/
-    void add()
-{
-      FILE *fp;
-      int n,i,j;
-      if((fp=fopen("emp.txt","ab+"))==NULL)
-      {
-          printf("²»ÄÜ´ò¿ªempÎÄ¼ş\n");
-           exit(0);
-      }
-    printf("Òª×·¼ÓµÄÖ°¹¤ÈËÊı:");
-      scanf("%d",&n);
-      for(i=0;i<n;i++) 
-      { 
-          printf("ÊäÈë¸ñÊ½:Ö°¹¤ºÅ    ĞÕÃû  »ù±¾¹¤×Ê Ö°Îñ¹¤×Ê Ö°Îñ½òÌù  ¼¨Ğ§¹¤×Ê   Ó¦·¢¹¤×Ê  Ë° <Enter>\n");
-         printf("×·¼Ó¼ÇÂ¼:\n");
-         scanf("%s%s%s%d%f%f%f%f%f",newemp.no,newemp.name,
-			 &newemp.wage1,&newemp.wage2,&newemp.wage3,&newemp.wage4,&newemp.wage5,&newemp.TAXfee);
-             newemp.wage6=newemp.wage1+newemp.wage2+newemp.wage3+newmp.wage4+newemp.wage5-newemp.TAXfee;//»ñÈ¡Ò»¸öĞÂµÄÖ°¹¤¼ÇÂ¼
-        fwrite(&newemp,sizeof(struct emploee),1,fp);   //½«¸ÃÖ°¹¤¼ÇÂ¼Ğ´ÈëÎÄ¼ş
-      }
-      fclose(fp);
-}
-/*************************ÔØÈëÄ£¿é**********************/
-void load()          //¼ÓÔØ¼ÇÂ¼»ò¿ÉÒÔ¼ÆËã¼ÇÂ¼¸öÊıµÄº¯Êı
-{
-     FILE *fp;
-     int i,w;
-     w=1;
-     system( "cls" ); 
-    if((fp=fopen("emp.txt","rb"))==NULL)      //ÒÔÊä³ö´ò¿ª·½Ê½,ÔÚ´ËÇ°µÄ¼ÇÂ¼±»¸²¸Ç
-    {
-        printf("\nCannot open file\n");
-        w=0;
-        return ;
-    }
-    n=0;
-    for(i=0;!feof(fp);i++)
+    FILE*Read=fopen("gx.dat","ab+");
+    if(Read)	//æ–‡ä»¶æ‰“å¼€æˆåŠŸ
     {   
-        fread(&emp[i],sizeof(struct emploee),1,fp);
-        n++;
+        while(!feof(Read))
+        {
+            char lock=fgetc(Read);		
+            if(lock!=EOF)	//æ£€æµ‹æ–‡ä»¶æœ«å°¾æ˜¯å¦ä¸ºç©ºå­—ç¬¦
+            {
+                fscanf(Read,"%s%s%f%f%f%f%f%f%f",
+					&zggz[n].number,&zggz[n].name,&zggz[n].post_wage,
+					&zggz[n].pay_salary,&zggz[n].duty_allowance,&zggz[n].merit_pay,
+					&zggz[n].gross_pay,&zggz[n].income_tax,&zggz[n].payroll);
+                n++;
+            }	//å°†nä¸ªèŒå·¥è®°å½•å†™å…¥æ–‡ä»¶
+        }
+        fclose(Read);
     }
-    n=n-1;
-          fclose(fp);
-    if(w==1) 
+    else
     {
-        printf("Load file ok!");
-        getchar();
-        getchar();
-        menu();                
+        printf("\næ–‡ä»¶æ‰“å¼€å¤±è´¥ï¼");
     }
+    
+}
+
+
+void write()		//ä¿å­˜æ–‡ä»¶å‡½æ•°
+{
+    FILE*DF_05=fopen("gx.dat","wb");
+    if(DF_05)
+    {   
+         for(int i=0;i<n;i++)	//åœ¨èŒå·¥é™å®šäººæ•°å†…å¾ªç¯
+        {
+            fprintf(DF_05,"\t%-10s%-10s%-10f\t%-10f\t%-10f\t%-10f\t%-10f\t%-10f\t%-10f",
+				zggz[i].number,zggz[i].name,zggz[i].post_wage,
+                zggz[i].pay_salary,zggz[i].duty_allowance,zggz[i].merit_pay,
+				zggz[i].gross_pay,zggz[i].income_tax,zggz[i].payroll);
+        }
+        fclose(DF_05);
+        printf("\næ–‡ä»¶ä¿å­˜æˆåŠŸï¼");
+    }
+    else
+    {
+        printf("\næ–‡ä»¶æ‰“å¼€å¤±è´¥ï¼");
+    }
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        return;
+    }
+}
+
+void find()		//æŸ¥è¯¢èŒå·¥ä¿¡æ¯å‡½æ•°
+{	
+	int i;
+    char gonghao[10];
+    printf("è¯·è¾“å…¥æŸ¥è¯¢çš„å·¥å·");
+    scanf("%s",gonghao);
+    for(i=0;i<n;i++)	//åœ¨èŒå·¥é™å®šäººæ•°å†…å¾ªç¯
+    {   
+        if(strcmp(gonghao,zggz[i].number)==0)	//æ£€æµ‹è¾“å…¥çš„å·¥å·æ˜¯å¦ä¸æ–‡ä»¶ä¸­çš„å·¥å·ç›¸åŒ	
+        {
+            printf("-------------------------------è¯¥èŒå·¥å·¥èµ„ä¿¡æ¯å¦‚ä¸‹------------------------------");
+            printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+                    "ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+                    "ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n",
+                zggz[i].number, zggz[i].name, zggz[i].post_wage, 
+                zggz[i].pay_salary, zggz[i].duty_allowance, zggz[i].merit_pay, 
+                zggz[i].gross_pay, zggz[i].income_tax, zggz[i].payroll);
+            i=1;
+        }
+    }
+    if(!i)
+    {
+    printf("æ‚¨æ‰€è¾“å…¥çš„èŒå·¥å·¥å·æœ‰è¯¯æˆ–ä¸å­˜åœ¨ï¼");
+    }
+
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        return;
+    }
+    
+}
+
+void list()		//æµè§ˆèŒå·¥ä¿¡æ¯å‡½æ•°
+{
+	if(n==0)
+	{
+		printf("ç›®å‰èŒå·¥æ•°ä¸º0");
+	}
+    else
+	{
+		printf("------------------------------å…¨ä½“èŒå·¥å·¥èµ„ä¿¡æ¯å¦‚ä¸‹------------------------------\n");
+		for(int i=0;i<n;i++)	//åœ¨èŒå·¥é™å®šäººæ•°å†…å¾ªç¯
+		{
+			printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+					"ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+					"ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n\n",
+					zggz[i].number, zggz[i].name, zggz[i].post_wage, 
+					zggz[i].pay_salary, zggz[i].duty_allowance, zggz[i].merit_pay, 
+					zggz[i].gross_pay, zggz[i].income_tax, zggz[i].payroll);
+		}
+	}
+
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        return;
+    }
+}
+
+void modify()	//ä¿®æ”¹èŒå·¥ä¿¡æ¯å‡½æ•°
+{
+    char gonghao[10];
+    printf("è¯·è¾“å…¥æŸ¥è¯¢çš„å·¥å·");
+    scanf("%s",gonghao);
+
+	int i;
+    for(i=0;i<n;i++)	//åœ¨èŒå·¥é™å®šäººæ•°å†…å¾ªç¯
+    {
+        if(strcmp(zggz[i].number,gonghao)==0)	//æ£€æµ‹è¾“å…¥çš„å·¥å·æ˜¯å¦ä¸æ–‡ä»¶ä¸­çš„å·¥å·ç›¸åŒ
+        {
+            printf("-------------------------------è¯¥èŒå·¥å·¥èµ„ä¿¡æ¯å¦‚ä¸‹-------------------------------");
+            printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+                    "ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+                    "ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n",
+                    zggz[i].number, zggz[i].name, zggz[i].post_wage, 
+                    zggz[i].pay_salary, zggz[i].duty_allowance, zggz[i].merit_pay, 
+                    zggz[i].gross_pay, zggz[i].income_tax, zggz[i].payroll);        
+
+            printf("è¯·è¾“å…¥è¯¥èŒå·¥æ–°çš„å²—ä½å·¥èµ„ï¼š");
+            scanf("%f",&zggz[i].post_wage);
+            printf("\nè¯·è¾“å…¥è¯¥èŒå·¥æ–°çš„è–ªçº§å·¥èµ„ï¼š");
+            scanf("%f",&zggz[i].pay_salary);
+            printf("\nè¯·è¾“å…¥è¯¥èŒå·¥æ–°çš„æ”¿åŠ¡æ´¥è´´ï¼š");
+            scanf("%f",&zggz[i].duty_allowance);
+            printf("\nè¯·è¾“å…¥è¯¥èŒå·¥æ–°çš„ç»©æ•ˆå·¥èµ„ï¼š");
+            scanf("%f",&zggz[i].merit_pay);
+    
+            zggz[i].gross_pay=zggz[i].post_wage+zggz[i].pay_salary+zggz[i].duty_allowance+zggz[i].merit_pay;    //è®¡ç®—åº”å‘å·¥èµ„
+            zggz[i].income_tax=grsd(zggz[i].gross_pay);    //è®¡ç®—ä¸ªäººæ‰€å¾—ç¨
+            zggz[i].payroll=zggz[i].gross_pay-zggz[i].income_tax;    //è®¡ç®—åº”å‘å·¥èµ„
+
+            printf("---------------------------è¯¥èŒå·¥ä¿®æ”¹åçš„å·¥èµ„ä¿¡æ¯å¦‚ä¸‹---------------------------");
+            printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+                    "ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+                    "ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n",
+                    zggz[i].number, zggz[i].name, zggz[i].post_wage, 
+                    zggz[i].pay_salary, zggz[i].duty_allowance, zggz[i].merit_pay, 
+                    zggz[i].gross_pay, zggz[i].income_tax, zggz[i].payroll);  
+			i=1;
+        }
+    }
+
+	if(!i)
+    {
+    printf("æ‚¨æ‰€è¾“å…¥çš„èŒå·¥å·¥å·æœ‰è¯¯æˆ–ä¸å­˜åœ¨ï¼");
+    }
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        return;
+    }
+}
+
+void del()		//åˆ é™¤èŒå·¥ä¿¡æ¯å‡½æ•°
+{
+    char gonghao[10];
+    cout<<"è¯·è¾“å…¥è¦åˆ é™¤çš„èŒå·¥å·";
+    scanf("%s",gonghao);
+   
+	int i;
+    for(i=0;i<n;i++)	//åœ¨èŒå·¥é™å®šäººæ•°å†…å¾ªç¯
+    {
+        if(strcmp(zggz[i].number,gonghao)==0)	//æ£€æµ‹è¾“å…¥çš„å·¥å·æ˜¯å¦ä¸æ–‡ä»¶ä¸­çš„å·¥å·ç›¸åŒ
+        {
+            printf("--------------------------------æŸ¥åˆ°è¯¥èŒå·¥å·¥èµ„ä¿¡æ¯å¦‚ä¸‹--------------------------------\n");;
+            printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+                    "ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+                    "ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n",
+                    zggz[i].number, zggz[i].name, zggz[i].post_wage, 
+                    zggz[i].pay_salary, zggz[i].duty_allowance, zggz[i].merit_pay, 
+                    zggz[i].gross_pay, zggz[i].income_tax, zggz[i].payroll);
+			int i=1;
+            printf("ä½ ç¡®è®¤åˆ é™¤è¿™ä¸ªèŒå·¥çš„å·¥èµ„ä¿¡æ¯ï¼Ÿ\n");
+            printf("æ˜¯ï¼Œè¯·æŒ‰1\t\tå¦ï¼Œè¯·æŒ‰2\n");
+            int flg;
+            scanf("%d",&flg);
+            if(flg==1)
+            {
+                for(int j=i;j<n-1;j++)
+                {
+                    zggz[j]=zggz[j+1];		//å°†èŒå·¥å·¥èµ„ä¿¡æ¯å¾€å‰ç§»
+                }
+                strcpy(zggz[n-1].number, " "); 
+                strcpy(zggz[n-1].name, " "); 
+                zggz[n-1].post_wage=0; 
+                zggz[n-1].pay_salary=0;
+                zggz[n-1].duty_allowance=0; 
+                zggz[n-1].merit_pay=0;
+                zggz[n-1].gross_pay=0;
+                zggz[n-1].income_tax=0;
+                zggz[n-1].payroll=0;	//å°†æœ€åä¸€ä¸ªèŒå·¥å·¥èµ„ä¿¡æ¯æ¸…é›¶
+                n=n-1;
+                printf("è¿™æ¡è®°å½•å·²æˆåŠŸåˆ é™¤");
+            }
+            else if(flg==2)
+            {
+                printf("å–æ¶ˆåˆ é™¤è¿™æ¡è®°å½•");
+            }
+        }
+    }
+	if(!i)
+    {
+    printf("æ‚¨æ‰€è¾“å…¥çš„èŒå·¥å·¥å·æœ‰è¯¯æˆ–ä¸å­˜åœ¨ï¼");
+    }
+  
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        system("cls");
+        return;
+    }
+    
+}
+
+void add()		//æ·»åŠ èŒå·¥å·¥èµ„ä¿¡æ¯å‡½æ•°
+{
+    n=n+1;		//èŒå·¥äººæ•°åŠ ä¸€
+    printf("è¯·è¾“å…¥è¯¥èŒå·¥çš„èŒå·¥å·¥å·,èŒå·¥å§“å,å²—ä½å·¥èµ„,è–ªçº§å·¥èµ„,æ”¿åŠ¡æ´¥è´´,ç»©æ•ˆå·¥èµ„\n");
+    scanf("%s%s%f%f%f%f",
+		&zggz[n-1].number,&zggz[n-1].name,&zggz[n-1].post_wage,
+		&zggz[n-1].pay_salary,&zggz[n-1].duty_allowance,&zggz[n-1].merit_pay);
+
+    zggz[n-1].gross_pay=zggz[n-1].post_wage + zggz[n-1].pay_salary + zggz[n-1].duty_allowance + zggz[n-1].merit_pay;    //è®¡ç®—åº”å‘å·¥èµ„
+    zggz[n-1].income_tax=grsd(zggz[n-1].gross_pay);    //è®¡ç®—ä¸ªäººæ‰€å¾—ç¨
+    zggz[n-1].payroll=zggz[n-1].gross_pay - zggz[n-1].income_tax;    //è®¡ç®—åº”å‘å·¥èµ„
+
+    printf( "------------------------æ·»åŠ æˆåŠŸï¼Œè¿™ä¸ªèŒå·¥çš„ä¿¡æ¯ä¸ºï¼š------------------------\n");
+    printf( "ä¸¨èŒå·¥å·¥å·:%-15sä¸¨èŒå·¥å§“å:%-15sä¸¨å²—ä½å·¥èµ„:%-15f\n"
+            "ä¸¨è–ªçº§å·¥èµ„:%-15fä¸¨èŒåŠ¡æ´¥è´´:%-15fä¸¨ç»©æ•ˆå·¥èµ„:%-15f\n"
+            "ä¸¨åº”å‘å·¥èµ„:%-15fä¸¨ä¸ªäººæ‰€å¾—ç¨:%-13fä¸¨å®å‘å·¥èµ„:%-15f\n",
+            zggz[n-1].number,zggz[n-1].name,zggz[n-1].post_wage,
+            zggz[n-1].pay_salary,zggz[n-1].duty_allowance,zggz[n-1].merit_pay,
+            zggz[n-1].gross_pay,zggz[n-1].income_tax,zggz[n-1].payroll);
+
+    printf("\næŒ‰ä»»æ„é”®è¿”å›ä¸»èœå•");
+    if(getch())
+    {   
+        return;
+    }
+}
+
+float grsd(float v)		//è®¡ç®—ä¸ªäººæ‰€å¾—ç¨
+{
+    float x=v;		//åº”çº³ç¨æ‰€å¾—é¢
+    float y=0;		//åº”çº³ç¨é¢
+    int n;
+    
+    if(x>0)
+    {
+        if(x<500)    n=1;
+        else if(x<2000)    n=2;
+        else if(x<5000)    n=3;
+        else if(x<20000)    n=4;
+        else if(x<40000)    n=5;
+        else if(x<60000)    n=6;
+        else if(x<80000)    n=7;
+        else if(x<100000)    n=8;
+        else n=9;
+    }
+    
+    switch(n)
+    {
+        case 8:y=y+(x-80000)*0.4;
+        case 7:y=y+(x-60000)*0.35;
+        case 6:y=y+(x-40000)*0.3;
+        case 5:y=y+(x-20000)*0.25;
+        case 4:y=y+(x-5000)*0.2;
+        case 3:y=y+(x-2000)*0.15;
+        case 2:y=y+(x-500)*0.1;
+        case 1:y=y+x*0.05;
+    }
+
+    return y;
+}
+
+void main()		//ä¸»å‡½æ•°
+{
+
+    
+    read();
+
+    while(1)
+    {
+		system("cls");		//æ¸…å±æ“ä½œ
+        printf("        ### æ¬¢è¿ä½¿ç”¨å¹¿è¥¿æ°‘æ—å¤§å­¦è½¯ä»¶ä¸ä¿¡æ¯å®‰å…¨å­¦é™¢èŒå·¥å·¥èµ„ç®¡ç†ç³»ç»Ÿ ###\n\n");
+        printf("        è¯·é€‰æ‹©æ•°å­—<1-7>                                   \n");
+        printf("        ==============================================================\n");
+        printf("        :                     1ã€ æŸ¥è¯¢èŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     2ã€ ä¿®æ”¹èŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     3ã€ æ·»åŠ èŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     4ã€ åˆ é™¤èŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     5ã€ ä¿å­˜èŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     6ã€ æµè§ˆèŒå·¥å·¥èµ„è®°å½•                   :\n");
+        printf("        :                     7ã€ é€€å‡ºç³»ç»Ÿ                           :\n");
+        printf("        ==============================================================\n");
+        printf("                        \n");
+        printf("                        \n");
+        printf("		           è¯·é€‰æ‹©ä¸€ä¸ªæ•°å­—[ ]\b\b");
+
+		int flg;
+        scanf("%d",&flg);
+        if(flg>=1&&flg<=7)		//å¯¹è¾“å…¥å­—æ•°è¿›è¡Œåˆ¤æ–­
+        {
+            switch(flg)
+            {
+                case 1:find();break;
+                case 2:modify();break;
+                case 3:add();break;
+                case 4:del();break;
+                case 5:write();break;
+                case 6:list();break;
+                case 7:exit(0);		//é€€å‡ºç³»ç»Ÿ
+            }
+        }
+        else
+        {
+            printf("æ— æ•ˆæŒ‡ä»¤ï¼Œè¯·é‡æ–°è¾“å…¥");
+            getch();
+            system("cls");
+        }
+    }
+    
 }
